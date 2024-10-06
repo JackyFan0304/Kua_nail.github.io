@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin'); // 引入 copy-webpack-plugin
 
 module.exports = {
     mode: 'development', // 開發模式
@@ -69,7 +70,12 @@ module.exports = {
             'process.env.NODE_ENV': JSON.stringify('development'), // 或 'production'
             '__VUE_OPTIONS_API__': 'true', // 根據需要設置
             '__VUE_PROD_DEVTOOLS__': 'false' // 根據需要設置
-        })
+        }),
+        new CopyWebpackPlugin({ // 添加 CopyWebpackPlugin 到插件列表
+            patterns: [
+                { from: path.resolve(__dirname, 'public/favicon.svg'), to: path.resolve(__dirname, 'dist/favicon.svg') }, // 複製 favicon.svg 到 dist 目錄
+            ],
+        }),
     ],
     devServer: {
         static: [
