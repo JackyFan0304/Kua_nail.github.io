@@ -1,5 +1,5 @@
 <template>
-    <section class="hero-section">
+    <section id="app" class="hero-section">
       <div class="overlay"></div> <!-- 半透明遮罩 -->
       <h1>
         YI LUN LI
@@ -7,10 +7,10 @@
       </h1>
       <img :src="backgroundImage" alt="KUA_PRO" class="bottom-image" /> <!-- 固定在底部的圖片 -->
     </section>
-  </template>
+</template>
   
   <script>
-  import backgroundImage from '@/assets/images/KUA_PRO.jpg';
+  import backgroundImage from '@/assets/images/Kua_pro.png';
   
   export default {
     name: 'HeroSection',

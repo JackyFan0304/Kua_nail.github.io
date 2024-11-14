@@ -1,5 +1,5 @@
 <template>
-    <section class="about-me">
+    <section id="about" class="about-me">
       <div class="about-image">
         <img :src="aboutImage" alt="About Me" />
       </div>

@@ -1,9 +1,11 @@
 <template>
-    <div class="gallery">
+    <div id="gallery" class="gallery">
         <h1>Instagram Gallery</h1>
         <div class="images">
             <div class="square" v-for="(image, index) in images" :key="index">
-                <img :src="image" alt="Instagram Image" />
+                <a :href="image.link" target="_blank"> <!-- 使用 image.link -->
+                    <img :src="image.url" alt="Instagram Image" /> <!-- 使用 image.url -->
+                </a>
             </div>
         </div>
     </div>
@@ -16,20 +18,49 @@ export default {
     data() {
         return {
             images: [], // 用來存儲圖片 URL
+            error: null, // 新增錯誤屬性
+            localImages: [], // 本地圖片路徑
+            localLinks: [ // 本地圖片對應的 Instagram 貼文鏈接
+                { url: '1_ig.jpg', link: 'https://www.instagram.com/p/DA-s5-zyJEn/' },
+                { url: '2_ig.jpg', link: 'https://www.instagram.com/p/C3H8-izyGHc/' },
+                { url: '3_ig.jpg', link: 'https://www.instagram.com/p/C8GpWX9Snu0/' },
+                { url: '4_ig.jpg', link: 'https://www.instagram.com/p/C8GpWX9Snu0/' },
+                { url: '5_ig.jpg', link: 'https://www.instagram.com/p/DBQuepKy2hh/' },
+                { url: '6_ig.jpg', link: 'https://www.instagram.com/p/C2U1lwuSQK_/' },
+                { url: '7_ig.jpg', link: 'https://www.instagram.com/p/C2U1lwuSQK_/' },
+                { url: '8_ig.jpg', link: 'https://www.instagram.com/p/C9b_DzsyYH1/' },
+                { url: '9_ig.jpg', link: 'https://www.instagram.com/p/C0ZMBrihdQg/' },
+                { url: '10_ig.jpg', link: 'https://www.instagram.com/p/C1fEviVS2Ve/' }
+            ]
         };
     },
     created() {
+        this.loadLocalImages(); // 加載本地圖
         this.fetchInstagramPosts();
     },
     methods: {
-        async fetchInstagramPosts() {
-            const url = 'http://localhost:5000/api/instagram'; // 使用本地地址
+        loadLocalImages() {
+            const requireContext = require.context('@/assets/images/ig_default', false, /\.(png|jpe?g|gif)$/);
+            const images = requireContext.keys().map(key => requireContext(key).default); // 獲取所有圖片的路徑            
+            this.localImages = images.slice(0, 10); // 取前 10 張圖片
+        },
 
+        async fetchInstagramPosts() {            
+            const url = 'http://localhost:5000/api/instagram';  
             try {
                 const response = await axios.get(url);
-                this.images = response.data; // 獲取圖片 URL
+                this.images = response.data.map(post => ({
+                    url: post.media_url, // 使用 media_url
+                    link: post.permalink // 使用 permalink
+                }));
             } catch (error) {
-                console.error('Error fetching Instagram posts:', error);
+                console.error('Error fetching Instagram posts:', error);                
+                // 當無法加載 Instagram 貼文時，使用本地圖片和鏈接
+                this.images = this.localLinks.map(link => ({
+                    url: require(`@/assets/images/ig_default/${link.url}`).default, // 獲取本地圖片路徑
+                    link: link.link // 使用對應的 Instagram 貼文鏈接
+                }));
+                this.error = '無法加載 Instagram 貼文，已使用本地圖片'; // 更新錯誤信息
             }
         }
     }
@@ -78,6 +109,12 @@ export default {
         height: 100%; // 高度100%
         object-fit: cover; // 確保圖片填滿容器且不變形
         object-position: center; // 圖片居中顯示
+    }
+
+    a {
+        display: block;
+        width: 100%;
+        height: 100%;
     }
 }
 

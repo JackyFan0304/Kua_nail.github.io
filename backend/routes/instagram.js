@@ -6,12 +6,18 @@ require('dotenv').config(); // 導入 dotenv 並加載環境變數
 router.get('/', async (req, res) => {
     const accessToken = process.env.ACCESS_TOKEN; // 從環境變數中獲取訪問令牌
     const userId = process.env.USER_ID; // 從環境變數中獲取用戶 ID
-    const url = `https://graph.instagram.com/me/media?fields=id,media_type,media_url&limit=10&access_token=${accessToken}`;
+    const url = `https://graph.instagram.com/me/media?fields=id,media_type,media_url,permalink&limit=10&access_token=${accessToken}`;
 
     try {
         const response = await axios.get(url);
         const posts = response.data.data;
-        const images = posts.map(post => post.media_url);
+
+        // 返回圖片 URL 和貼文 URL
+        const images = posts.map(post => ({
+            media_url: post.media_url,
+            permalink: post.permalink // 獲取貼文 URL
+        }));
+
         res.json(images);
     } catch (error) {
         console.error('Error fetching Instagram posts:', error);
