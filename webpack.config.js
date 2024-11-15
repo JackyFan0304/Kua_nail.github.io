@@ -73,9 +73,9 @@ module.exports = {
         }),
         new CopyWebpackPlugin({ // 添加 CopyWebpackPlugin 到插件列表
             patterns: [
-                { from: path.resolve(__dirname, 'public/favicon.svg'), to: path.resolve(__dirname, 'dist/favicon.svg') }, // 複製 favicon.svg 到 dist 目錄
+                { from: path.resolve(__dirname, 'public/nail_logo.png'), to: path.resolve(__dirname, 'dist/nail_logo.png') }, // 複製 nail_logo.png 到 dist 目錄
             ],
-        }),
+        }), 
     ],
     devServer: {
         static: [

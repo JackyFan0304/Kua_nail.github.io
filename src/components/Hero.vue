@@ -2,7 +2,7 @@
     <section id="app" class="hero-section">
       <div class="overlay"></div> <!-- 半透明遮罩 -->
       <h1>
-        YI LUN LI
+        Kua nail
         <span>Manicurists & Artists</span> <!-- 副標 -->
       </h1>
       <img :src="backgroundImage" alt="KUA_PRO" class="bottom-image" /> <!-- 固定在底部的圖片 -->

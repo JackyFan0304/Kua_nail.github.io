@@ -23,7 +23,7 @@
   </template>
   
   <script>
-  import aboutImage from '@/assets/images/about_me.jpg'; // 替換為你的圖片路徑
+  import aboutImage from '@/assets/images/about_me.jpg'; // 圖片路徑
   
   export default {
     name: 'AboutMe',
@@ -53,6 +53,7 @@
     position: relative;
     height: 100vh; /* 設置高度為 100vh */
     display: flex; /* 使用 Flexbox 排版 */
+    flex-wrap: wrap; /* 允許換行 */
     align-items: center; /* 垂直居中對齊 */
     overflow: hidden; /* 隱藏超出內容 */
     font-family: 'Noto Sans TC', sans-serif; /* 使用繁黑體字體 */  
